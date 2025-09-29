@@ -66,7 +66,7 @@ async def list_models():
 
 @app.post("/predict/{model_name}")
 async def predict(
-    model_name: Annotated[str, Path(regex=r"^(logistic_model|rf_model)$")],
+    model_name: Annotated[str, Path(pattern=r"^(logistic_model|rf_model)$")],
     iris: IrisData,
     background_tasks: BackgroundTasks,
 ):
