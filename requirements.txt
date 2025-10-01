@@ -3,3 +3,7 @@ fastapi-cli~=0.0.5
 uvicorn~=0.30.6
 scikit-learn~=1.5.1
 python-dotenv~=1.0.1
+pytest~=8.4.2
+pytest-mock
+pydantic
+httpx
