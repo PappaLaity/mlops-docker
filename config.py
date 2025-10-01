@@ -6,8 +6,6 @@ load_dotenv()
 
 # API_KEY = os.getenv("API_KEY")
 API_KEY = None
-LOGISTIC_MODEL = None
-RF_MODEL = None
 try:
     with open("/run/secrets/api_key") as f:
         API_KEY = f.read().strip()
@@ -17,5 +15,5 @@ except FileNotFoundError:
 # with open("/run/secrets/api_key") as f:
 #     API_KEY = f.read().strip()
 
-LOGISTIC_MODEL = os.getenv("LOGISTIC_MODEL", "logistic_model")
-RF_MODEL = os.getenv("RF_MODEL", "rf_model")
+LOGISTIC_MODEL = os.getenv("LOGISTIC_MODEL")
+RF_MODEL = os.getenv("RF_MODEL")

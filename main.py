@@ -13,16 +13,17 @@ from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Path
 from entities.iris import IrisData
 
 
-
-
 ml_models = {}  # Global dictionary to hold the models.
 
 
 def load_model(path: str):
     model = None
-    with open(path, "rb") as f:
-        model = pickle.load(f)
-    return model
+    try:
+        with open(path, "rb") as f:
+            model = pickle.load(f)
+        return model
+    except FileNotFoundError:
+        print("model Not Found")
 
 
 @asynccontextmanager
@@ -44,6 +45,7 @@ app = FastAPI(lifespan=lifespan)
 # def init_Testclient():
 #     client = TestClient(app)
 #     return client
+
 
 # Health check endpoint
 @app.get("/health")
