@@ -17,13 +17,13 @@ ml_models = {}  # Global dictionary to hold the models.
 
 
 def load_model(path: str):
+    if not path:
+        return None
     model = None
-    try:
-        with open(path, "rb") as f:
-            model = pickle.load(f)
-        return model
-    except FileNotFoundError:
-        print("model Not Found")
+
+    with open(path, "rb") as f:
+        model = pickle.load(f)
+    return model
 
 
 @asynccontextmanager
