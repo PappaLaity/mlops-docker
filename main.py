@@ -4,19 +4,15 @@ import time
 from contextlib import asynccontextmanager
 from typing import Annotated
 
+from fastapi.testclient import TestClient
+
 from auth import require_api_key
 from config import LOGISTIC_MODEL, RF_MODEL
 from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Path
-from pydantic import BaseModel, Field
+
+from entities.iris import IrisData
 
 
-class IrisData(BaseModel):
-    sepal_length: float = Field(
-        default=1.1, gt=0, lt=10, description="Sepal length is in range (0,10)"
-    )
-    sepal_width: float = Field(default=3.1, gt=0, lt=10)
-    petal_length: float = Field(default=2.1, gt=0, lt=10)
-    petal_width: float = Field(default=4.1, gt=0, lt=10)
 
 
 ml_models = {}  # Global dictionary to hold the models.
@@ -45,6 +41,9 @@ async def lifespan(app: FastAPI):
 # Create a FastAPI instance
 app = FastAPI(lifespan=lifespan)
 
+# def init_Testclient():
+#     client = TestClient(app)
+#     return client
 
 # Health check endpoint
 @app.get("/health")
@@ -84,7 +83,7 @@ async def predict(
 
     background_tasks.add_task(
         log_prediction,
-        {"model": model_name, "features": iris.dict(), "prediction": prediction},
+        {"model": model_name, "features": iris.model_dump(), "prediction": prediction},
     )
 
     return {"model": model_name, "prediction": int(prediction[0])}
@@ -97,7 +96,7 @@ def log_prediction(data: dict):
 
 @app.post("/predict_secure/{model_name}")
 async def predict_secure(
-    model_name: Annotated[str, Path(regex=r"^(logistic_model|rf_model)$")],
+    model_name: Annotated[str, Path(pattern=r"^(logistic_model|rf_model)$")],
     iris: IrisData,
     background_tasks: BackgroundTasks,
     _: str = Depends(require_api_key),
