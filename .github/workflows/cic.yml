@@ -25,6 +25,6 @@ jobs:
 
       - name: Run tests
         env:
-          LOGISTIC_MODEL: $ {{ secrets.LOGISTIC_MODEL }}
-          RF_MODEL: $ {{ secrets.RF_MODEL }}
+          LOGISTIC_MODEL: ${{ secrets.LOGISTIC_MODEL }}
+          RF_MODEL: ${{ secrets.RF_MODEL }}
         run: pytest
