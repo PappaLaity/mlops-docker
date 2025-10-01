@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+
 # Give ownership of the app directory to the non-root user
 # RUN chown -R appuser:appuser /app
 
@@ -18,8 +19,9 @@ COPY . .
 USER appuser
 
 # # Env Variables
-# ENV LOGISTIC_MODEL="models/logistic_regression.pkl"
 # ENV RF_MODEL="models/random_forest.pkl"
+
+# RUN mkdir models
 
 
 EXPOSE 8000

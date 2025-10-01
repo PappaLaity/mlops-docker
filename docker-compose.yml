@@ -1,0 +1,24 @@
+services:
+  api:
+    image: pappalaity/ml-apps:v7
+    container_name: ml-api
+    ports:
+      - "2002:8000"         # host:container
+    env_file:
+      - .env                # charge tes variables d'environnement
+    volumes:
+      - ./models:/app/models    # monte ton dossier de modèles
+    secrets:
+      - api_key              # monte ton secret
+    restart: unless-stopped
+  # tests:
+  #   build: .
+  #   container_name: fastapi_tests
+  #   depends_on:
+  #     - api
+  #   command: pytest --maxfail=1 --disable-warnings -q
+  #   volumes:
+  #     - .:/app
+secrets:
+  api_key:
+    file: ./api-key.txt
